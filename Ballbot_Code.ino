@@ -22,16 +22,15 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *myMotor1 = AFMS.getMotor(1);
 Adafruit_DCMotor *myMotor2= AFMS.getMotor(2);
 
-const int x_motor_Pin = 2; /* Motor controlling movement in the x_direction */
-const int y_motor_Pin = 3; /* Motor controlling y-movement */
 
 void setup() {
   AFMS.begin();
   Serial.begin(9600);
   
-  pinMode(x_motor_Pin,OUTPUT); 
-  pinMode(y_motor_Pin,OUTPUT);
-
+  // Default Motor Speed
+  myMotor1 -> setSpeed(0);
+  myMotor2 -> setSpeed(0);
+  
   if( !bno.begin() ) /* If the sensor is not read by the arduino */
   {
     Serial.print("Connection Issue. Check the wiring or I2C address.");
@@ -52,9 +51,43 @@ void loop() {
 }
 
 
-void command_Motor(){
+void command_Motor(float duty_cycle_x, float duty_cycle_y){
+  /* NJB 3/3/18 - Command_Motor(float duty_cycle_x, float duty_cycle_y)
+   *  INFO - Takes the duty cycle produced by the control algorithm and converts it into an output that the 
+   *  Adafruit Motor Shield can use to control the motors.
+   *  
+   *  Input Variables account for a negative value produced by the control algorithm 
+  */
+  float adj_duty_cycle_x = 0, adj_duty_cycle_y = 0;
   
   Serial.print("Motor Code");
+  if (duty_cycle_x < 0){
+    myMotor1 -> run(BACKWARD);
+    duty_cycle_x = (-1 * duty_cycle_x);
+    adj_duty_cycle_x = map(duty_cycle_x,0, 100, 0, 255);
+    myMotor1 -> setSpeed(adj_duty_cycle_x);
+  }
+  else{
+    myMotor1 -> run(FORWARD);
+    adj_duty_cycle_x = map(duty_cycle_x, 0, 100, 0, 255);
+    myMotor1 -> setSpeed(adj_duty_cycle_x);  
+  }
+  if(duty_cycle_y < 0){
+    myMotor2 -> run(BACKWARD);
+    duty_cycle_y = (-1 * duty_cycle_y);
+    adj_duty_cycle_y = map(duty_cycle_y, 0, 100, 0, 255);
+    myMotor2 -> setSpeed(adj_duty_cycle_y);
+  }
+  else{
+    myMotor2 -> run(FORWARD);
+    adj_duty_cycle_y = map(duty_cycle_y, 0 , 100, 0, 255);
+    myMotor2 -> setSpeed(adj_duty_cycle_y);
+  }
+
+  // May Not Be Needed After - Releases The Motors After Use
+  //myMotor1 -> run(RELEASE);
+  //myMotor2 -> run(RELEASE);
+  
   
   }
   
