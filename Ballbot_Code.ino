@@ -1,5 +1,3 @@
-
-
 /*
  * Purpose: This code is meant to interface the UNO with the Inertial Measurement
  * Unit (IMU) and two motors, and it will include control equations that will keep the 
@@ -46,8 +44,9 @@ void setup() {
 
 
 void loop() {
-  float IMU_data[6] = [0,0,0,0,0,0];
-  IMU_data = IMU_Sensor_Read();
+  float IMU_data[6] = {0,0,0,0,0,0};
+  IMU_data[0], IMU_data[1], IMU_data[2], IMU_data[3], IMU_data[4], IMU_data[5] = IMU_Sensor_Read();
+  command_Motor(100, 100); // Placement Values
 }
 
 
@@ -107,7 +106,7 @@ void displaySensorDetails(void) /* Shows basic sensor details */
   delay(250); //250ms Delay njb 2/17/18
 }
 
-void IMU_Sensor_Read(void){
+float IMU_Sensor_Read(void){
   /* NJB 2/27/18 - INFO: Gathers the relavent sensor data from the Inertial Mesurement Unit and stores that data into an 
    *  array to be used by the control algorithm
    *  
@@ -118,8 +117,7 @@ void IMU_Sensor_Read(void){
 
   bno.getEvent(&event);  /* Stores collected data into event variable's location */
                          /* and converts the data into SI units and scales them */
-  float data[6] = [0,0,0,0,0,0];
-  
+  float data[6] = {0,0,0,0,0,0}; 
   for(int i = 0; i < 6; i++){
     switch(i){
       case 0:
@@ -181,6 +179,6 @@ void IMU_Sensor_Read(void){
       break;
     }
   }
-  return data;
+  return data[0], data[1], data[2], data[3], data[4], data[5]; 
 }
 
