@@ -32,6 +32,7 @@ void setup() {
  
  Serial.begin(9600);
  pinMode(button_pin,INPUT);
+ pinMode(light_sens_pin,INPUT);
  
  initialization(); //Runs intiliazation task and sets up initial parameters before calibration
  
@@ -97,7 +98,7 @@ void initialization(void){
 void state_est_and_control(double gyro_y_val, double gyro_x_val,double phi_angle_y,
                double phi_angle_x,double *pwm_y_direction, double *pwm_x_direction){
   /* This function will call the control theory code 
-  and deal with the input and outpus */
+  and deal with the input and output */
   //Note: These values might be available in local functions due to them being global
   } 
 
@@ -114,7 +115,8 @@ double read_voltage(void){
 void state_check(void){
   light_sens_val = analogRead(light_sens_pin);
   run_check = digitalRead(button_pin);
-
+  battery = read_voltage(); //Continuously check battery voltage
+                            //May need to use low pass filter
   double phi_angle_y, phi_angle_x; //local variables for transfering encoder readings
   
   sensors_event_t event;
@@ -149,7 +151,7 @@ void state_check(void){
     state = stop_run;
     servos_off();
     }
-  battery = read_voltage(); //Continuously check battery voltage
+
   }
 
 
