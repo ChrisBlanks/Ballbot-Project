@@ -1,9 +1,9 @@
 # Ballbot-Project
-This project is an adaptation to the Ballbot project done by a few 
+This project is an adaptation of the Ballbot project done by a few 
 University of Adelaide students. This adaptation uses the 
-arduino MEGA platform (instead of the Lego Mindstorms NXT brick),
-a motor shield from Adafruit,and the IMU sensor from Adafruit. The 
-other components (excluding a few circuits built for the project) 
+Arduino MEGA platform (instead of the Lego Mindstorms NXT brick),
+a motor shield from Adafruit,NXT motors/encoders, Lego Mindstorms structure pieces,
+and the IMU sensor from Adafruit. The other components (excluding a few circuits built for the project) 
 are similar to the UA students' project.
 
 Part of the code comes from the control theory diagrams located in the
