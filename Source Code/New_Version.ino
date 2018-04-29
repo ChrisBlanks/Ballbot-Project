@@ -1,3 +1,14 @@
+/*
+ * Programmer: Chris Blanks
+ * Last update: April 28th, 2018
+ * Notes:
+ * This code is still being refined and tested. The control portion of
+ * the code is responsive to changes in the gyro and encoder angles,
+ * but there is usually too much actuation.
+ *
+ */
+
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
